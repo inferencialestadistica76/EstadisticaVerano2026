@@ -1,0 +1,2230 @@
+Unidad 1. Regresión lineal simple y correlación
+Medidas de dispersión
+Suma de los cuadrados de las desviaciones de los valores de 
+ con respecto a su media:
+Suma de los productos de las desviaciones de los valores de 
+ y 
+ con respecto a sus medias:
+Suma de los cuadrados de las desviaciones de los valores de 
+ con respecto a su media:
+
+Coeficiente de correlación y de determinación
+Coeficiente de correlación de Pearson:
+ 
+Coeficiente de determinación:
+
+Recta de regresión ajustada
+La regresión lineal ajustada se representa mediante estadísticos:
+donde 
+ representa el valor de 
+ obtenido mediante la recta de regresión ajustada (no la verdadera 
+). Los estadísticos 
+ y 
+ se calculan de la siguiente manera:
+
+ 
+
+
+Cálculo de residuales
+Residuales:
+
+Sumas de cuadrados SS (Sum of Squares)
+Suma de los Cuadrados de los Errores:
+Suma total de cuadrados:
+Suma de cuadrados de regresión:
+
+SST: Mide la variabilidad total de los datos observados.
+SSR: Mide la variabilidad de los datos que el modelo de regresión explica.
+SSE: Mide la variabilidad no explicada por el modelo (es decir, los residuos).
+Intervalo de confianza
+Estadístico de prueba t:
+ 
+Error estándar de 
+:
+ 
+o
+ 
+
+Intervalo de confianza para 
+:
+donde 
+ representa la cantidad de pares de datos.
+
+Comprobación de supuestos
+Comprobar suposiciones:
+
+Test de shapiro a los residuales 
+: Para comprobar si la distribución es normal sobre la recta.
+Grafico 
+ vs 
+: Para observar si los datos soportan la suposición de linealidad.
+Gráfico de residuales: Para observar si los datos soportan la suposición de linealidad, complementario al coeficiente de correlación
+Test de Breusch-Pagan: Para detectar heteroscedasticidad en regresion lineal
+Test de Shapiro:
+from scipy.stats import shapiro
+Después, se obtiene el valor-p:
+_, valor_p_sh = shapiro(data)
+
+: Los datos siguen una distribución normal
+: Los datos no siguen una distribución normal
+Test de Breusch-Pagan:
+from statsmodels.stats.api import het_breuschpagan
+Después, se obtiene el valor-p:
+_, valor_p_bp, _, _ = het_breuschpagan(residuales, X)
+
+: Hay homoscedasticidad
+: Hay heteroscedasticidad
+ANOVA en regresión lineal
+Fuente de variación	Suma de cuadrados (SS)	Grados de libertad (df)	Promedio de los cuadrados (MS)	Estadístico F
+Regresión	
+ 
+ 
+Error	
+ 
+Total	
+donde 
+ es el número de parámetros para la recta de regresión ajustada (en la regresión simple 
+). Las hipótesis son:
+
+Problemario de la Unidad 1
+Problema 1
+Un profesor intenta mostrar a sus estudiantes la importancia de los exámenes cortos, aun cuando el 90% de la calificación final esté determinada por los exámenes parciales. Él cree que cuanto más altas sean las calificaciones de los exámenes cortos, más alta será la calificación final. Seleccionó una muestra aleatoria de 15 estudiantes de su clase con los siguientes datos:
+
+Promedio de exámenes cortos	Promedio final
+59	64
+92	84
+72	77
+90	80
+95	77
+87	81
+89	80
+77	84
+76	80
+65	69
+97	83
+42	40
+94	78
+62	65
+91	90
+Establesca una variable dependiente (
+) y una variable independiente (
+).
+Realice un diagrama de dispersión para estos datos.
+¿Los datos soportan la suposición de linealidad?
+Calcule el coeficiente de correlación e interprete el resultado.
+Calcule el coeficiente de determinación e interprete el resultado.
+Obtenga la recta de regresión ajustada y grafíquelo sobre el gráfico de dispersión.
+Obtenga un intervalo de confianza del 95% para la pendiente de la recta de regresión ajustada (
+)
+Calcule los residuales y trace un nuevo gráfico de dispersión. Comente, ¿Parece que se verifican los supuestos?
+Realice la prueba de Shapiro para los residuales y comente el resultado.
+Realice la prueba de Brausch-Pagan para los residuales y comente el resultado.
+Tres estudiantes sacaron 70, 75 y 84 de calificación. Según la recta de regresión ajustada, ¿cuáles son los resultados esperados para estos tres alumnos?
+Realice una tabla ANOVA e interprete el resultado.
+
+import pandas as pd
+
+df = pd.DataFrame({
+    "promedio_examen_cortos": [59, 92, 72, 90, 95, 87, 89, 77, 76, 65, 97, 42, 94, 62, 91],
+    "promedio_final": [64, 84, 77, 80, 77, 81, 80, 84, 80, 69, 83, 40, 78, 65, 90]
+})
+
+df
+     
+promedio_examen_cortos	promedio_final
+0	59	64
+1	92	84
+2	72	77
+3	90	80
+4	95	77
+5	87	81
+6	89	80
+7	77	84
+8	76	80
+9	65	69
+10	97	83
+11	42	40
+12	94	78
+13	62	65
+14	91	90
+Establesca una variable dependiente ( Y ) y una variable independiente ( X ).
+
+# Que informacion tengo (x) Variable independiente
+# Que informacion tengo (y) Variable dependiente
+
+Y = df["promedio_final"]
+X = df["promedio_examen_cortos"]
+     
+Realice un diagrama de dispersión para estos datos.
+
+# Importamos la librería matplotlib.pyplot y le damos el pseudónimo plt
+import matplotlib.pyplot as plt
+
+# Configuración general del gráfico
+plt.figure(
+    figsize=(6, 4),   # tamaño de la figura (ancho, alto) en pulgadas
+    dpi=120           # resolución del gráfico
+)
+
+# Gráfico de dispersión
+plt.scatter(
+    X, Y,
+    marker="o",       # forma: googlear "matplotlib.markers"
+    color='yellow',     # color de los puntos
+    edgecolor='blue',    # borde de los puntos
+    alpha=0.8,            # transparencia: 0 es invisible y 1 es color sólido
+    s=50,                 # tamaño de los puntos
+)
+
+# Etiquetas de los ejes
+# eje x
+plt.xlabel(
+    'Temperatura (°C)', # etiqueta del eje x
+    fontsize=12  # tamaño de fuente
+)
+
+plt.ylabel(
+    'Consumo (kWh)', # etiqueta del eje y
+    fontsize=12 # tamaño de fuente
+)
+
+# Fuente de los ticks
+plt.xticks(fontsize=10)
+plt.yticks(fontsize=10)
+
+# Márgenes
+plt.gca().spines['right'].set_visible(False) # derecha
+plt.gca().spines['top'].set_visible(False)   # superior
+
+# Cuadrícula (opcional, pero didáctica)
+plt.grid(
+    visible=True,
+    linestyle='--',
+    linewidth=0.7,
+    alpha=0.5,
+    color="gray"
+)
+
+     
+
+¿Los datos soportan la suposición de linealidad?
+No, porque existie una tendencia positivay sigue una relacion de los puntos
+
+Calcule el coeficiente de correlación e interprete el resultado.
+
+# Importar la función pearsonr desde scipy.stats
+from scipy.stats import pearsonr
+
+# Test de Pearson
+# H0: rho = 0     (No hay correlación)
+# H1: rho ≠ 0     (Sí hay correlación)
+# alpha = 0.05
+
+r, valor_p = pearsonr(X, Y)
+
+print(f"Coeficiente de correlación: {r: 0.4f}")
+print(f'valor_p: {valor_p: 0.4f}')
+
+     
+Coeficiente de correlación:  0.8646
+valor_p:  0.0000
+El coeficiente de correlacion es 
+, este valor indica que la correlacion es fuerte, dado que esta muy cerca de 1.
+
+Calcule el coeficiente de determinación e interprete el resultado.
+
+import statsmodels.api as sm
+x_constante = sm.add_constant(X)
+modelo = sm.OLS(Y, x_constante).fit()
+y_calculada = modelo.predict(x_constante)
+     
+
+# Coeficiente de determinacion
+from sklearn.metrics import r2_score
+
+r2 = r2_score(Y, y_calculada)
+print(f"Coeficiente de determinacion: {r2: 0.2%}")
+     
+Coeficiente de determinacion:  74.75%
+Con coeficiente de determinacion de 
+ indica que con los promedios de los examenes cortos, estoy justificando en un 74.75% la variabilidad de los promedios finales. Por lo que el modelo puede tener una buena capacidad de prediccion.
+
+Obtenga la recta de regresión ajustada y grafíquelo sobre el gráfico de dispersión.
+
+import statsmodels.api as sm
+
+x_constante = sm.add_constant(X)
+modelo = sm.OLS(Y, x_constante).fit()
+y_calculada = modelo.predict(x_constante)
+
+modelo.params
+     
+0
+const	24.526822
+promedio_examen_cortos	0.643180
+
+dtype: float64
+El modelo es:
+
+
+donde 
+ es el promedio en examnes cortos.
+
+
+# Importamos la librería matplotlib.pyplot y le damos el pseudónimo plt
+import matplotlib.pyplot as plt
+
+# Configuración general del gráfico
+plt.figure(
+    figsize=(6, 4),   # tamaño de la figura (ancho, alto) en pulgadas
+    dpi=120           # resolución del gráfico
+)
+
+# Gráfico de dispersión
+plt.scatter(
+    X, Y,
+    marker="o",       # forma: googlear "matplotlib.markers"
+    color='yellow',     # color de los puntos
+    edgecolor='blue',    # borde de los puntos
+    alpha=0.8,            # transparencia: 0 es invisible y 1 es color sólido
+    s=50,                 # tamaño de los puntos
+)
+
+# Gráfico de línea
+plt.plot(
+    X, y_calculada,
+    color='black',   # color de la línea
+    linewidth=1.0,        # grosor de la línea
+    linestyle='--',        # estilo de línea
+    label='Recta de regresión'
+)
+
+# Etiquetas de los ejes
+# eje x
+plt.xlabel(
+    'Temperatura (°C)', # etiqueta del eje x
+    fontsize=12  # tamaño de fuente
+)
+
+plt.ylabel(
+    'Consumo (kWh)', # etiqueta del eje y
+    fontsize=12 # tamaño de fuente
+)
+
+# Fuente de los ticks
+plt.xticks(fontsize=10)
+plt.yticks(fontsize=10)
+
+# Márgenes
+plt.gca().spines['right'].set_visible(False) # derecha
+plt.gca().spines['top'].set_visible(False)   # superior
+
+# Cuadrícula (opcional, pero didáctica)
+plt.grid(
+    visible=True,
+    linestyle='--',
+    linewidth=0.7,
+    alpha=0.5,
+    color="gray"
+)
+     
+
+Obtenga un intervalo de confianza del 95% para la pendiente de la recta de regresión ajustada ( b1 )
+La ecuacion de la recta es:
+
+
+
+#intervalos de confianza
+modelo.conf_int(alpha=0.05)
+     
+0	1
+const	6.441997	42.611646
+promedio_examen_cortos	0.419219	0.867141
+El verdadero 
+ está entre 
+ y 
+ con una confianza del 95%. Esto indica que las calificaciones (
+) tienen una categoria de promedios de examenes finales. (
+) que está entre estos dos valores. EL verdadero valor de 
+ está entre 
+-0. 0.867141$ con un 95% de confianza. Dado que dentre de este intervalo no está el valor de cero, entonces la relación es significativa. También indica que por cada falta se pierde entre 0.867141 y 0.867141 en la categoría de salario
+
+Calcule los residuales y trace un nuevo gráfico de dispersión. Comente, ¿Parece que se verifican los supuestos?
+
+residuales = modelo.resid
+     
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import statsmodels.api as sm # Importamos statsmodels
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import statsmodels.api as sm # Importamos statsmodels
+
+# Redefinimos df para asegurar su disponibilidad
+df = pd.DataFrame({
+    "promedio_examen_cortos": [59, 92, 72, 90, 95, 87, 89, 77, 76, 65, 97, 42, 94, 62, 91],
+    "promedio_final": [64, 84, 77, 80, 77, 81, 80, 84, 80, 69, 83, 40, 78, 65, 90]
+})
+
+# Redefinimos Y y X
+Y = df["promedio_final"]
+X = df["promedio_examen_cortos"]
+
+# Recalculamos y_calculada
+x_constante = sm.add_constant(X)
+modelo = sm.OLS(Y, x_constante).fit()
+y_calculada = modelo.predict(x_constante)
+
+# Calculamos los residuales
+residuales = Y - y_calculada
+
+# Configuración general del gráfico
+plt.figure(
+    figsize=(6, 4),   # tamaño de la figura (ancho, alto) en pulgadas
+    dpi=120           # resolución del gráfico
+)
+
+# Gráfico de dispersión
+plt.scatter(
+    X, residuales,
+    marker="o",       # forma: googlear "matplotlib.markers"
+    color='yellow',     # color de los puntos
+    edgecolor='blue',    # borde de los puntos
+    alpha=0.8,            # transparencia: 0 es invisible y 1 es color sólido
+    s=50,                 # tamaño de los puntos
+)
+
+# Gráfico de línea
+plt.plot(
+    X, y_calculada * 0,
+    color='black',   # color de la linea
+    linewidth=1.0,        # grosor de la linea
+    linestyle='--',        # estilo de linea
+    label='Recta de regresión'
+)
+
+# Etiquetas de los ejes
+# eje x
+plt.xlabel(
+    'Promedio examenes cortos', # etiqueta del eje x
+    fontsize=12  # tamaño de fuente
+)
+
+plt.ylabel(
+    'Residuales', # etiqueta del eje y
+    fontsize=12 # tamaño de fuente
+)
+
+# Fuente de los ticks
+plt.xticks(fontsize=10)
+plt.yticks(fontsize=10)
+
+# Márgenes
+plt.gca().spines['right'].set_visible(False) # derecha
+plt.gca().spines['top'].set_visible(False)   # superior
+
+# Cuadrícula (opcional, pero didáctica)
+plt.grid(
+    visible=True,
+    linestyle='--',
+    linewidth=0.7,
+    alpha=0.5,
+    color="gray"
+)
+     
+
+Para los supuestos:
+
+Linealidad: Parece que sí, por que los residuos se distribuyen aleatoriamente alrededor de la linea de cero sin mostrar patrones curvos ni tendencias claras.
+
+Normalidad: Sí cumple con la normalidad, porque los residuos se reparten de forma simetrica respecto al cero.
+
+Homoscedasticidad: No cumple con la homoscedasticidad,porque la dispersion aumenta conforme crece el promedio.
+
+Independencia: Sí cılmple, porque son cada observacion corresponde a un estudiante distinto.
+
+Realice la prueba de Shapiro para los residuales y comente el resultado.
+
+from scipy.stats import shapiro
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+#test de shapiro-Wilk
+#Ho:Hay normalidad
+#Hi:No hay normalidad
+
+# Prueba de Shapiro-Wilk
+stat, valor_p_sh = shapiro(residuales)
+print(f"valor-p (Shapiro) = {valor_p_sh}")
+
+# Visualización: Q-Q plot
+sm.qqplot(residuales, line='s')
+plt.title("Q-Q plot de residuos")
+plt.show()
+
+# Histograma
+sns.histplot(residuales, kde=True)
+plt.title("Histograma de residuos")
+plt.show()
+     
+valor-p (Shapiro) = 0.901827735700704
+
+
+Realice la prueba de Brausch-Pagan para los residuales y comente el resultado.
+
+# Test de Breusch-Pagan
+# H0: No hay heterocedasticidad (dispersión es igual en toda la recta)
+# H1: Hay Heterocedasticidad (dispersión distinta a lo largo de la recta)
+# alpha = 0.05
+
+from statsmodels.stats.api import het_breuschpagan
+import statsmodels.api as sm
+x_constante = sm.add_constant(X)
+_, valor_p_bp, _, _ = het_breuschpagan(residuales, x_constante)
+print(f'valor-p de Breusch-Pagan: {valor_p_bp: 0.4f}\n')
+     
+valor-p de Breusch-Pagan:  0.2289
+
+Utiliza la recta de regresión para interpolar dos valores y extrapolar uno. Comenta estos resultados.
+
+# minimo ausencias: 11
+# maximo ausencias: 40
+
+# interpolar, valores de x entre 11 y 40
+
+# interpolar 1
+y_25 = modelo.predict([1, 25])
+y_32 = modelo.predict ([1,32])
+
+print(f"Para x = 25, y = {y_25[0]: 0.4f}")
+print(f"Para x = 32, y = {y_32[0]: 0.4f}")
+     
+Para x = 25, y =  40.6063
+Para x = 32, y =  45.1086
+
+df["salario_predicho"] = y_calculada.round()
+df
+     
+promedio_examen_cortos	promedio_final	salario_predicho
+0	59	64	62.0
+1	92	84	84.0
+2	72	77	71.0
+3	90	80	82.0
+4	95	77	86.0
+5	87	81	80.0
+6	89	80	82.0
+7	77	84	74.0
+8	76	80	73.0
+9	65	69	66.0
+10	97	83	87.0
+11	42	40	52.0
+12	94	78	85.0
+13	62	65	64.0
+14	91	90	83.0
+Realice una tabla ANOVA e interprete el resultado.
+
+# test de ANOVA (Analysis of Variance)
+# H0: beta_1 = 0   (No hay correlación)
+# H1: beta_1 ≠ 0   (Sí hay correlación)
+
+import statsmodels.api as sm
+from statsmodels.formula.api import ols
+# Y ~ X
+modelo_lineal = ols(
+    '''promedio_final ~ promedio_examen_cortos''',
+    data = df).fit()
+tabla_anova = sm.stats.anova_lm(modelo_lineal)
+tabla_anova
+     
+df	sum_sq	mean_sq	F	PR(>F)
+promedio_examen_cortos	1.0	1538.228959	1538.228959	38.492412	0.000032
+Residual	13.0	519.504375	39.961875	NaN	NaN
+Sí hay correlación porque el valor-p de 
+ es menor que el nivel de significancia establecido 
+. I En los residuales del anova se puede ver la variabilidad explicada porla recta de regresión es mucho mayor que la variabilidad que queda sin explicar.
+
+Problema 2
+William Hawkins, vicepresidente de personal de la International Motors, trabaja en la relación entre el salario de un trabajador y el porcentaje de ausentismo. Hawkins dividió el intervalo de salarios de International en 12 grados o niveles (1 es el menor grado, 12 el más alto) y después muestreó aleatoriamente a un grupo de trabajadores. Determinó el grado de salario de cada trabajador y el número de días que ese empleado había faltado en los últimos 3 años.
+
+Categoría de salario	11	10	8	5	9	7	3
+Ausencias	18	17	29	36	11	28	35
+Categoría de salario	11	8	7	2	9	8	3
+Ausencias	14	20	32	39	16	31	40
+Establesca una variable dependiente (
+) y una variable independiente (
+).
+Realice un diagrama de dispersión para estos datos.
+¿Los datos soportan la suposición de linealidad?
+Calcule el coeficiente de correlación e interprete el resultado.
+Calcule el coeficiente de determinación e interprete el resultado.
+Obtenga la recta de regresión ajustada y grafíquelo sobre el gráfico de dispersión.
+Obtenga un intervalo de confianza del 95% para la pendiente de la recta de regresión ajustada (
+)
+Calcule los residuales y trace un nuevo gráfico de dispersión. Comente, ¿Parece que se verifican los supuestos?
+Realice la prueba de Shapiro para los residuales y comente el resultado.
+Realice la prueba de Brausch-Pagan para los residuales y comente el resultado.
+Utiliza la recta de regresión para interpolar dos valores y extrapolar uno. Comenta estos resultados.
+Realice una tabla ANOVA e interprete el resultado.
+
+import pandas as pd
+
+df = pd.DataFrame({
+    "salario": [11,10,8,5,9,7,3,11,8,7,2,9,8,3],
+    "ausencias": [18,17,29,36,11,28,35,14,20,32,39,16,31,40]
+})
+
+df
+     
+salario	ausencias
+0	11	18
+1	10	17
+2	8	29
+3	5	36
+4	9	11
+5	7	28
+6	3	35
+7	11	14
+8	8	20
+9	7	32
+10	2	39
+11	9	16
+12	8	31
+13	3	40
+Establesca una variable dependiente ( Y ) y una variable independiente ( X ).
+: es el salario porque es dependiente
+: son las ausencias porque es independiente
+
+# Y: salarios
+# X: ausencias
+
+X = df["ausencias"]
+Y = df["salario"]
+     
+Realice un diagrama de dispersión para estos datos.
+
+# Importamos la librería matplotlib.pyplot y le damos el pseudónimo plt
+import matplotlib.pyplot as plt
+
+# Configuración general del gráfico
+plt.figure(
+    figsize=(6, 4),   # tamaño de la figura (ancho, alto) en pulgadas
+    dpi=120           # resolución del gráfico
+)
+
+# Gráfico de dispersión
+plt.scatter(
+    X, Y,
+    marker="o",       # forma: googlear "matplotlib.markers"
+    color='yellow',     # color de los puntos
+    edgecolor='blue',    # borde de los puntos
+    alpha=0.8,            # transparencia: 0 es invisible y 1 es color sólido
+    s=50,                 # tamaño de los puntos
+)
+
+# Etiquetas de los ejes
+# eje x
+plt.xlabel(
+    'ausencias (°C)', # etiqueta del eje x
+    fontsize=12  # tamaño de fuente
+)
+
+plt.ylabel(
+    'Consumo (kWh)', # etiqueta del eje y
+    fontsize=12 # tamaño de fuente
+)
+
+# Fuente de los ticks
+plt.xticks(fontsize=10)
+plt.yticks(fontsize=10)
+
+# Márgenes
+plt.gca().spines['right'].set_visible(False) # derecha
+plt.gca().spines['top'].set_visible(False)   # superior
+
+# Cuadrícula (opcional, pero didáctica)
+plt.grid(
+    visible=True,
+    linestyle='--',
+    linewidth=0.7,
+    alpha=0.5,
+    color="gray"
+)
+
+     
+
+¿Los datos soportan la suposición de linealidad?
+Si, por que los datos soportan la suposicion de linealidad.
+
+Calcule el coeficiente de correlación e interprete el resultado.
+
+# Importar la función pearsonr desde scipy.stats
+from scipy.stats import pearsonr
+
+# Test de Pearson
+# H0: rho = 0     (No hay correlación)
+# H1: rho ≠ 0     (Sí hay correlación)
+# alpha = 0.05
+
+r, valor_p = pearsonr(X, Y)
+
+print(f"Coeficiente de correlación: {r: 0.4f}")
+print(f'valor_p: {valor_p: 0.4f}')
+
+     
+Coeficiente de correlación: -0.8801
+valor_p:  0.0000
+El coeficiente de correlacion es 
+, este valor indica que la correlacion es fuerte, dado que esta muy cerca de 1. Ademas, el que se negativa, implica que aumentar las ausencias (
+) disminuye el salario (
+).
+
+Calcule el coeficiente de determinación e interprete el resultado.
+
+import statsmodels.api as sm
+x_constante = sm.add_constant(X)
+modelo = sm.OLS(Y, x_constante).fit()
+y_calculada = modelo.predict(x_constante)
+     
+
+# Coeficiente de determinacion
+from sklearn.metrics import r2_score
+
+r2 = r2_score(Y, y_calculada)
+print(f"Coeficiente de determinacion: {r2: 0.2%}")
+     
+Coeficiente de determinacion:  77.46%
+Con coeficiente de determinacion de 
+ indica que con las ausencias estoy justificando en un 77.46% la variabilidad de los salarios. Por lo que el modelo puede tener una buena capacidad de prediccion.
+
+Obtenga la recta de regresión ajustada y grafíquelo sobre el gráfico de dispersión:
+
+import statsmodels.api as sm
+
+x_constante = sm.add_constant(X)
+modelo = sm.OLS(Y, x_constante).fit()
+y_calculada = modelo.predict(x_constante)
+
+modelo.params
+     
+0
+const	14.058843
+ausencias	-0.261814
+
+dtype: float64
+La ecuacion de la recta es:
+
+
+
+# Importamos la librería matplotlib.pyplot y le damos el pseudónimo plt
+import matplotlib.pyplot as plt
+
+# Configuración general del gráfico
+plt.figure(
+    figsize=(6, 4),   # tamaño de la figura (ancho, alto) en pulgadas
+    dpi=120           # resolución del gráfico
+)
+
+# Gráfico de dispersión
+plt.scatter(
+    X, Y,
+    marker="o",       # forma: googlear "matplotlib.markers"
+    color='yellow',     # color de los puntos
+    edgecolor='blue',    # borde de los puntos
+    alpha=0.8,            # transparencia: 0 es invisible y 1 es color sólido
+    s=50,                 # tamaño de los puntos
+)
+
+# Gráfico de línea
+plt.plot(
+    X, y_calculada,
+    color='black',   # color de la línea
+    linewidth=1.0,        # grosor de la línea
+    linestyle='--',        # estilo de línea
+    label='Recta de regresión'
+)
+
+# Etiquetas de los ejes
+# eje x
+plt.xlabel(
+    'ausencias (°C)', # etiqueta del eje x
+    fontsize=12  # tamaño de fuente
+)
+
+plt.ylabel(
+    'Consumo (kWh)', # etiqueta del eje y
+    fontsize=12 # tamaño de fuente
+)
+
+# Fuente de los ticks
+plt.xticks(fontsize=10)
+plt.yticks(fontsize=10)
+
+# Márgenes
+plt.gca().spines['right'].set_visible(False) # derecha
+plt.gca().spines['top'].set_visible(False)   # superior
+
+# Cuadrícula (opcional, pero didáctica)
+plt.grid(
+    visible=True,
+    linestyle='--',
+    linewidth=0.7,
+    alpha=0.5,
+    color="gray"
+)
+     
+
+Obtenga un intervalo de confianza del 95% para la pendiente de la recta de regresión ajustada ( b1 )
+La ecuacion de la recta es:
+
+
+
+#intervalos de confianza
+modelo.conf_int(alpha=0.05)
+
+     
+0	1
+const	11.587445	16.530241
+ausencias	-0.350638	-0.172989
+El verdadero 
+ está entre 
+ y 
+ con una confianza del 95%. Esto indica que una persona sin ausencias (
+) tiene una categoría de salario (
+) que está entre estos dos valores. EL verdadero valor de 
+ está entre 
+-0. 172989$ con un 95% de confianza. Dado que dentre de este intervalo no está el valor de cero, entonces la relación es significativa. También indica que por cada falta se pierde entre 0.172989 y 0.350638 en la categoría de salario
+
+Calcule los residuales y trace un nuevo gráfico de dispersión. Comente, ¿Parece que se verifican los supuestos?
+
+residuales = modelo.resid
+     
+
+# Importamos la librería matplotlib.pyplot y le damos el pseudónimo plt
+import matplotlib.pyplot as plt
+
+residuales = modelo.resid
+
+# Configuración general del gráfico
+plt.figure(
+    figsize=(6, 4),   # tamaño de la figura (ancho, alto) en pulgadas
+    dpi=120           # resolución del gráfico
+)
+
+
+# Gráfico de dispersión
+plt.scatter(
+    X, residuales,
+    marker="o",       # forma: googlear "matplotlib.markers"
+    color='blue',     # color de los puntos
+    edgecolor='black',    # borde de los puntos
+    alpha=0.8,            # transparencia: 0 es invisible y 1 es color sólido
+    s=50,                 # tamaño de los puntos
+)
+
+ #Gráfico de línea
+plt.plot(
+    X,y_calculada * 0,
+    color='black',   # color de la línea
+    linewidth=1.0,        # grosor de la línea
+    linestyle='--',        # estilo de línea
+    label='Recta de regresión'
+)
+
+# Etiquetas de los ejes
+# eje x
+plt.xlabel(
+    'Ausencias', # etiqueta del eje x
+    fontsize=12  # tamaño de fuente
+)
+
+plt.ylabel(
+    'Salario', # etiqueta del eje y
+    fontsize=12 # tamaño de fuente
+)
+
+# Fuente de los ticks
+plt.xticks(fontsize=10)
+plt.yticks(fontsize=10)
+
+# Márgenes
+plt.gca().spines['right'].set_visible(False) # derecha
+plt.gca().spines['top'].set_visible(False)   # superior
+
+# Cuadrícula (opcional, pero didáctica)
+plt.grid(
+    visible=True,
+    linestyle='--',
+    linewidth=0.7,
+    alpha=0.5,
+    color="gray"
+)
+
+     
+
+Para los supuestos:
+
+Linealidad: Parece que sí, porque los puntos se distribuyen al rededor de una linea recta con una tendencia decreciente clara.
+
+Normalidad: Sí cumple con la normalidad, porque los residuos se dispersan de forma simetrica al rededor de la recta ajustada.
+
+Homoscedasticidad: Sí cumple con la homoscedasticidad, porque la dispersion vertical de llos puntos se mantiene aproximadamente constante a lo largo de todo el rango de la variable independiente.
+
+Independencia: Sí cılmple, porque son diferentes personas.
+
+Realice la prueba de Shapiro para los residuales y comente el resultado.
+
+from scipy.stats import shapiro
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# n < 30, Shapiro-Wilk es el mas confiable
+# n >= 30, Histograma o Q-Q plot
+
+#test de shapiro-Wilk
+# 1
+#Ho:Hay normalidad   0.4172971767713699
+# 0.05 (Assuming this was intended as alpha value or a note)
+#Hi:No hay normalidad
+# 0
+
+# Prueba de Shapiro-Wilk
+stat, valor_p_sh = shapiro(residuales)
+print(f"valor-p (Shapiro) = {valor_p_sh}")
+
+# Visualización: Q-Q plot
+sm.qqplot(residuales, line='s')
+plt.title("Q-Q plot de residuos")
+plt.show()
+
+# Histograma
+sns.histplot(residuales, kde=True)
+plt.title("Histograma de residuos")
+plt.show()
+     
+valor-p (Shapiro) = 0.4172971767713699
+
+
+Realice la prueba de Brausch-Pagan para los residuales y comente el resultado.
+
+# Test de Breusch-Pagan
+# H0: No hay heterocedasticidad (dispersión es igual en toda la recta)
+# H1: Hay Heterocedasticidad (dispersión distinta a lo largo de la recta)
+# alpha = 0.05
+
+from statsmodels.stats.api import het_breuschpagan
+import statsmodels.api as sm
+x_constante = sm.add_constant(X)
+_, valor_p_bp, _, _ = het_breuschpagan(residuales, x_constante)
+print(f'valor-p de Breusch-Pagan: {valor_p_bp: 0.4f}\n')
+     
+valor-p de Breusch-Pagan:  0.8955
+
+Utiliza la recta de regresión para interpolar dos valores y extrapolar uno. Comenta estos resultados.
+
+# minimo ausencias: 11
+# maximo ausencias: 40
+
+# interpolar, valores de x entre 11 y 40
+
+# interpolar 1
+y_25 = modelo.predict([1, 25])
+y_32 = modelo.predict ([1,32])
+
+print(f"Para x = 25, y = {y_25[0]: 0.4f}")
+print(f"Para x = 32, y = {y_32[0]: 0.4f}")
+     
+Para x = 25, y =  7.5135
+Para x = 32, y =  5.6808
+
+df["salario_predicho"] = y_calculada.round()
+df
+     
+salario	ausencias	salario_predicho
+0	11	18	9.0
+1	10	17	10.0
+2	8	29	6.0
+3	5	36	5.0
+4	9	11	11.0
+5	7	28	7.0
+6	3	35	5.0
+7	11	14	10.0
+8	8	20	9.0
+9	7	32	6.0
+10	2	39	4.0
+11	9	16	10.0
+12	8	31	6.0
+13	3	40	4.0
+Realice una tabla ANOVA e interprete el resultado.
+
+# test de ANOVA (Analysis of Variance)
+# H0: beta_1 = 0   (No hay correlación)
+# H1: beta_1 ≠ 0   (Sí hay correlación)
+
+import statsmodels.api as sm
+from statsmodels.formula.api import ols
+# Y ~ X
+modelo_lineal = ols(
+    '''salario ~ ausencias''',
+    data = df).fit()
+tabla_anova = sm.stats.anova_lm(modelo_lineal)
+tabla_anova
+     
+df	sum_sq	mean_sq	F	PR(>F)
+ausencias	1.0	87.034348	87.034348	41.243954	0.000033
+Residual	12.0	25.322795	2.110233	NaN	NaN
+Sí hay correlación porque el valor-p de 
+ es menor a un nivel de significancia 
+. I En los residuales del anova se puede ver la variabilidad explicada porla recta de regresión es mucho mayor que la variabilidad que queda sin explicar
+
+Problema 3
+A menudo, quienes hacen la contabilidad de costos estiman los gastos generales con base en el nivel de producción. En Standard Knitting Co. han reunido información acerca de los gastos generales y las unidades producidas en diferentes plantas.
+
+Gastos generales	191	170	272	155	280	173	234	116	153	178
+Unidades	40	42	53	35	56	39	48	30	37	40
+Establesca una variable dependiente (
+) y una variable independiente (
+).
+Realice un diagrama de dispersión para estos datos.
+¿Los datos soportan la suposición de linealidad?
+Calcule el coeficiente de correlación e interprete el resultado.
+Calcule el coeficiente de determinación e interprete el resultado.
+Obtenga la recta de regresión ajustada y grafíquelo sobre el gráfico de dispersión.
+Obtenga un intervalo de confianza del 95% para la pendiente de la recta de regresión ajustada (
+)
+Calcule los residuales y trace un nuevo gráfico de dispersión. Comente, ¿Parece que se verifican los supuestos?
+Realice la prueba de Shapiro para los residuales y comente el resultado.
+Realice la prueba de Brausch-Pagan para los residuales y comente el resultado.
+Utiliza la recta de regresión para interpolar dos valores y extrapolar uno. Comenta estos resultados.
+Realice una tabla ANOVA e interprete el resultado.
+
+import pandas as pd
+
+df = pd.DataFrame({
+    "Gatos generales": [191,170,272,155,280,173,234,116,153,178],
+    "Unidades": [40,42,53,35,56,39,48,30,37,40]
+
+})
+
+df
+     
+Gatos generales	Unidades
+0	191	40
+1	170	42
+2	272	53
+3	155	35
+4	280	56
+5	173	39
+6	234	48
+7	116	30
+8	153	37
+9	178	40
+Establesca una variable dependiente ( Y ) y una variable independiente ( X ).
+
+# Que informacion tengo (x) Variable independiente
+# Que informacion tengo (y) Variable dependiente
+
+X = df["Unidades"]
+Y = df["Gatos generales"]
+     
+Realice un diagrama de dispersión para estos datos.
+
+# Importamos la librería matplotlib.pyplot y le damos el pseudónimo plt
+import matplotlib.pyplot as plt
+
+# Configuración general del gráfico
+plt.figure(
+    figsize=(6, 4),   # tamaño de la figura (ancho, alto) en pulgadas
+    dpi=120           # resolución del gráfico
+)
+
+# Gráfico de dispersión
+plt.scatter(
+    X, Y,
+    marker="o",       # forma: googlear "matplotlib.markers"
+    color='yellow',     # color de los puntos
+    edgecolor='blue',    # borde de los puntos
+    alpha=0.8,            # transparencia: 0 es invisible y 1 es color sólido
+    s=50,                 # tamaño de los puntos
+)
+
+# Etiquetas de los ejes
+# eje x
+plt.xlabel(
+    'ausencias (°C)', # etiqueta del eje x
+    fontsize=12  # tamaño de fuente
+)
+
+plt.ylabel(
+    'Consumo (kWh)', # etiqueta del eje y
+    fontsize=12 # tamaño de fuente
+)
+
+# Fuente de los ticks
+plt.xticks(fontsize=10)
+plt.yticks(fontsize=10)
+
+# Márgenes
+plt.gca().spines['right'].set_visible(False) # derecha
+plt.gca().spines['top'].set_visible(False)   # superior
+
+# Cuadrícula (opcional, pero didáctica)
+plt.grid(
+    visible=True,
+    linestyle='--',
+    linewidth=0.7,
+    alpha=0.5,
+    color="gray"
+)
+
+     
+
+¿Los datos soportan la suposición de linealidad?
+Sí, el diagrama de dispersión sugiere una relación lineal positiva entre las unidades producidas y los gastos generales, ya que los puntos tienden a seguir una línea recta ascendente.
+
+Calcule el coeficiente de correlación e interprete el resultado.
+
+# Importar la función pearsonr desde scipy.stats
+from scipy.stats import pearsonr
+
+# Test de Pearson
+# H0: rho = 0     (No hay correlación)
+# H1: rho ≠ 0     (Sí hay correlación)
+# alpha = 0.05
+
+r, valor_p = pearsonr(X, Y)
+
+print(f"Coeficiente de correlación: {r: 0.4f}")
+print(f'valor_p: {valor_p: 0.4f}')
+     
+Coeficiente de correlación:  0.9835
+valor_p:  0.0000
+El coeficiente de correlacion es 
+, este valor indica que la correlacion es fuerte, dado que esta muy cerca de 1. Ademas, el que se negativa, implica que aumentar las ausencias (
+) disminuye el salario (
+).
+
+Calcule el coeficiente de determinación e interprete el resultado.
+
+import statsmodels.api as sm
+x_constante = sm.add_constant(X)
+modelo = sm.OLS(Y, x_constante).fit()
+y_calculada = modelo.predict(x_constante)
+
+# Coeficiente de determinacion
+from sklearn.metrics import r2_score
+
+r2 = r2_score(Y, y_calculada)
+print(f"Coeficiente de determinacion: {r2: 0.2%}")
+     
+Coeficiente de determinacion:  96.73%
+Con coeficiente de determinacion de 
+ indica que con las ausencias estoy justificando en un 96.73% la variabilidad de gastos generales. Por lo que el modelo puede tener una buena capacidad de prediccion.
+
+Obtenga la recta de regresión ajustada y grafíquelo sobre el gráfico de dispersión.
+
+import statsmodels.api as sm
+import pandas as pd
+
+# Redefine df, X, Y for Problem 3 to ensure context
+df = pd.DataFrame({
+    "Gatos generales": [191,170,272,155,280,173,234,116,153,178],
+    "Unidades": [40,42,53,35,56,39,48,30,37,40]
+})
+
+X = df["Unidades"]
+Y = df["Gatos generales"]
+
+x_constante = sm.add_constant(X)
+modelo = sm.OLS(Y, x_constante).fit()
+y_calculada = modelo.predict(x_constante)
+
+modelo.params
+     
+0
+const	-80.442857
+Unidades	6.491497
+
+dtype: float64
+La ecuacion de la recta es:
+
+
+
+# Importamos la librería matplotlib.pyplot y le damos el pseudónimo plt
+import matplotlib.pyplot as plt
+
+# Configuración general del gráfico
+plt.figure(
+    figsize=(6, 4),   # tamaño de la figura (ancho, alto) en pulgadas
+    dpi=120           # resolución del gráfico
+)
+
+# Gráfico de dispersión
+plt.scatter(
+    X, Y,
+    marker="o",       # forma: googlear "matplotlib.markers"
+    color='yellow',     # color de los puntos
+    edgecolor='blue',    # borde de los puntos
+    alpha=0.8,            # transparencia: 0 es invisible y 1 es color sólido
+    s=50,                 # tamaño de los puntos
+)
+
+# Gráfico de línea
+plt.plot(
+    X, y_calculada,
+    color='black',   # color de la línea
+    linewidth=1.0,        # grosor de la línea
+    linestyle='--',        # estilo de línea
+    label='Recta de regresión'
+)
+
+# Etiquetas de los ejes
+# eje x
+plt.xlabel(
+    'ausencias (°C)', # etiqueta del eje x
+    fontsize=12  # tamaño de fuente
+)
+
+plt.ylabel(
+    'Consumo (kWh)', # etiqueta del eje y
+    fontsize=12 # tamaño de fuente
+)
+
+# Fuente de los ticks
+plt.xticks(fontsize=10)
+plt.yticks(fontsize=10)
+
+# Márgenes
+plt.gca().spines['right'].set_visible(False) # derecha
+plt.gca().spines['top'].set_visible(False)   # superior
+
+# Cuadrícula (opcional, pero didáctica)
+plt.grid(
+    visible=True,
+    linestyle='--',
+    linewidth=0.7,
+    alpha=0.5,
+    color="gray"
+)
+     
+
+Obtenga un intervalo de confianza del 95% para la pendiente de la recta de regresión ajustada ( b1 )
+La ecuacion de la recta es:
+
+
+
+#intervalos de confianza
+modelo.conf_int(alpha=0.05)
+     
+0	1
+const	-121.986373	-38.899341
+Unidades	5.518450	7.464543
+El verdadero 
+ está entre 
+ y 
+ con una confianza del 95%. Esto indica que las unidades (
+) tiene una categoría de datos generales (
+) que está entre estos dos valores. EL verdadero valor de 
+ está entre 
+-0. 172989$ con un 95% de confianza. Dado que dentre de este intervalo no está el valor de cero, entonces la relación es significativa. También indica que por cada falta se pierde entre 7.464543y 5.518450 en la categoría de datos generales.
+
+Calcule los residuales y trace un nuevo gráfico de dispersión. Comente, ¿Parece que se verifican los supuestos?
+
+# Importamos la librería matplotlib.pyplot y le damos el pseudónimo plt
+import matplotlib.pyplot as plt
+
+residuales = modelo.resid
+
+# Configuración general del gráfico
+plt.figure(
+    figsize=(6, 4),   # tamaño de la figura (ancho, alto) en pulgadas
+    dpi=120           # resolución del gráfico
+)
+
+
+# Gráfico de dispersión
+plt.scatter(
+    X, residuales,
+    marker="o",       # forma: googlear "matplotlib.markers"
+    color='blue',     # color de los puntos
+    edgecolor='black',    # borde de los puntos
+    alpha=0.8,            # transparencia: 0 es invisible y 1 es color sólido
+    s=50,                 # tamaño de los puntos
+)
+
+ #Gráfico de línea
+plt.plot(
+    X,y_calculada * 0,
+    color='black',   # color de la línea
+    linewidth=1.0,        # grosor de la línea
+    linestyle='--',        # estilo de línea
+    label='Recta de regresión'
+)
+
+# Etiquetas de los ejes
+# eje x
+plt.xlabel(
+    'Ausencias', # etiqueta del eje x
+    fontsize=12  # tamaño de fuente
+)
+
+plt.ylabel(
+    'Salario', # etiqueta del eje y
+    fontsize=12 # tamaño de fuente
+)
+
+# Fuente de los ticks
+plt.xticks(fontsize=10)
+plt.yticks(fontsize=10)
+
+# Márgenes
+plt.gca().spines['right'].set_visible(False) # derecha
+plt.gca().spines['top'].set_visible(False)   # superior
+
+# Cuadrícula (opcional, pero didáctica)
+plt.grid(
+    visible=True,
+    linestyle='--',
+    linewidth=0.7,
+    alpha=0.5,
+    color="gray"
+)
+
+     
+
+Para los supuestos:
+
+Linealidad: Parece que sí, porque los puntos se agrupan al rededor de una linea recta con tendencia creciente.
+
+Normalidad: Sí cumple con la normalidad, porque la dispersion son simetricos, la mayoria cerca de ellas y pocos alejados.
+
+Homoscedasticidad: Sí cumple con la homoscedasticidad, porque la variacion vertical de los puntos se mantiene constante a todo el rango de la variable independiente.
+
+Independencia: Sí cılmple, porque cada observacion corresponde a registros independientes entre si.
+
+Realice la prueba de Shapiro para los residuales y comente el resultado.
+
+from scipy.stats import shapiro
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Prueba de Shapiro-Wilk
+stat, valor_p_sh = shapiro(residuales)
+print(f"valor-p (Shapiro) = {valor_p_sh: 0.4f}")
+
+# Visualización: Q-Q plot
+sm.qqplot(residuales, line='s')
+plt.title("Q-Q plot de residuos")
+plt.show()
+
+# Histograma
+sns.histplot(residuales, kde=True)
+plt.title("Histograma de residuos")
+plt.show()
+     
+valor-p (Shapiro) =  0.2205
+
+
+Realice la prueba de Brausch-Pagan para los residuales y comente el resultado.
+
+from statsmodels.stats.api import het_breuschpagan
+import statsmodels.api as sm
+
+x_constante = sm.add_constant(X)
+_, valor_p_bp, _, _ = het_breuschpagan(residuales, x_constante)
+print(f'valor-p de Breusch-Pagan: {valor_p_bp: 0.4f}\n')
+     
+valor-p de Breusch-Pagan:  0.9858
+
+Utiliza la recta de regresión para interpolar dos valores y extrapolar uno. Comenta estos resultados.
+
+import pandas as pd
+import statsmodels.api as sm
+
+# Redefine df, X, Y for Problem 3 to ensure context
+df = pd.DataFrame({
+    "Gatos generales": [191,170,272,155,280,173,234,116,153,178],
+    "Unidades": [40,42,53,35,56,39,48,30,37,40]
+})
+
+X = df["Unidades"]
+Y = df["Gatos generales"]
+
+# Redefine modelo for Problem 3
+x_constante = sm.add_constant(X)
+modelo = sm.OLS(Y, x_constante).fit()
+
+# Interpolate two values and extrapolate one
+# Minimo de Unidades: 30
+# Maximo de Unidades: 56
+valores_a_predecir_interpolar = [45, 50] # within [30, 56]
+valor_a_predecir_extrapolar = 60 # outside [30, 56]
+
+print("Resultados esperados (Predicciones):")
+
+print("Interpolación:")
+for val in valores_a_predecir_interpolar:
+  pred = modelo.predict([1, val])[0]
+  print(f"   Para X (Unidades) = {val} -> Y (Gastos generales) estimado = {pred:.2f}")
+
+print("\nExtrapolación:")
+pred_ext = modelo.predict([1, valor_a_predecir_extrapolar])[0]
+print(f"   Para X (Unidades) = {valor_a_predecir_extrapolar} -> Y (Gastos generales) estimado = {pred_ext:.2f}")
+
+print("\nComentarios:")
+print("La interpolación proporciona predicciones para valores de X dentro del rango de los datos observados, lo que generalmente es más fiable.")
+print("La extrapolación, al predecir valores de X fuera del rango observado, es menos fiable y debe interpretarse con precaución, ya que la relación lineal podría no mantenerse fuera de ese rango.")
+
+     
+Resultados esperados (Predicciones):
+Interpolación:
+   Para X (Unidades) = 45 -> Y (Gastos generales) estimado = 211.67
+   Para X (Unidades) = 50 -> Y (Gastos generales) estimado = 244.13
+
+Extrapolación:
+   Para X (Unidades) = 60 -> Y (Gastos generales) estimado = 309.05
+
+Comentarios:
+La interpolación proporciona predicciones para valores de X dentro del rango de los datos observados, lo que generalmente es más fiable.
+La extrapolación, al predecir valores de X fuera del rango observado, es menos fiable y debe interpretarse con precaución, ya que la relación lineal podría no mantenerse fuera de ese rango.
+Realice una tabla ANOVA e interprete el resultado.
+
+# test de ANOVA (Analysis of Variance)
+# H0: beta_1 = 0   (No hay correlación)
+# H1: beta_1 ≠ 0   (Sí hay correlación)
+
+import statsmodels.api as sm
+from statsmodels.formula.api import ols
+# Y ~ X
+modelo_lineal = ols(
+    "Q('Gatos generales') ~ Unidades",
+    data = df).fit()
+tabla_anova = sm.stats.anova_lm(modelo_lineal)
+tabla_anova
+     
+df	sum_sq	mean_sq	F	PR(>F)
+Unidades	1.0	24778.042517	24778.042517	236.669535	3.167080e-07
+Residual	8.0	837.557483	104.694685	NaN	NaN
+Sí hay correlación porque el valor-p de 
+ es menor a un nivel de significancia 
+. I En los residuales del anova se puede ver la variabilidad explicada porla recta de regresión es mucho mayor que la variabilidad que queda sin explicar
+
+Problema 4
+Las ventas de línea blanca varían según el estado del mercado de casas nuevas: cuando las ventas de casas nuevas son buenas, también lo son las de lavaplatos, lavadoras de ropa, secadoras y refrigeradores. Una asociación de comercio compiló los siguientes datos históricos (en miles de unidades) de las ventas de línea blanca y la construcción de casas.
+
+Construcción de casas (miles)	Ventas de línea blanca (miles)
+2.0	5.0
+2.5	5.5
+3.2	6.0
+3.6	7.0
+3.7	7.2
+4.0	7.7
+4.2	8.4
+4.6	9.0
+4.8	9.7
+5.0	10.0
+Establesca una variable dependiente (
+) y una variable independiente (
+).
+Realice un diagrama de dispersión para estos datos.
+¿Los datos soportan la suposición de linealidad?
+Calcule el coeficiente de correlación e interprete el resultado.
+Calcule el coeficiente de determinación e interprete el resultado.
+Obtenga la recta de regresión ajustada y grafíquelo sobre el gráfico de dispersión.
+Obtenga un intervalo de confianza del 95% para la pendiente de la recta de regresión ajustada (
+)
+Calcule los residuales y trace un nuevo gráfico de dispersión. Comente, ¿Parece que se verifican los supuestos?
+Realice la prueba de Shapiro para los residuales y comente el resultado.
+Realice la prueba de Brausch-Pagan para los residuales y comente el resultado.
+Utiliza la recta de regresión para interpolar dos valores y extrapolar uno. Comenta estos resultados.
+Realice una tabla ANOVA e interprete el resultado.
+
+import pandas as pd
+
+df = pd.DataFrame({
+    "construccion de casas": [2.0, 2.5, 3.2, 3.6, 3.7, 4.0, 4.2, 4.6, 4.8, 5.0],
+    "ventas de linea blanca": [5.0, 5.5, 6.0, 7.0, 7.2, 7.7, 8.4, 9.0, 9.7, 10.0]
+})
+
+df
+     
+construccion de casas	ventas de linea blanca
+0	2.0	5.0
+1	2.5	5.5
+2	3.2	6.0
+3	3.6	7.0
+4	3.7	7.2
+5	4.0	7.7
+6	4.2	8.4
+7	4.6	9.0
+8	4.8	9.7
+9	5.0	10.0
+Establesca una variable dependiente ( Y ) y una variable independiente ( X ).
+
+# Y: ventas de linea blanca
+# X: construccion de casas
+
+X = df["construccion de casas"]
+Y = df["ventas de linea blanca"]
+     
+Realice un diagrama de dispersión para estos datos.
+
+# Importamos la librería matplotlib.pyplot y le damos el pseudónimo plt
+import matplotlib.pyplot as plt
+
+# Configuración general del gráfico
+plt.figure(
+    figsize=(6, 4),   # tamaño de la figura (ancho, alto) en pulgadas
+    dpi=120           # resolución del gráfico
+)
+
+# Gráfico de dispersión
+plt.scatter(
+    X, Y,
+    marker="o",       # forma: googlear "matplotlib.markers"
+    color='yellow',     # color de los puntos
+    edgecolor='blue',    # borde de los puntos
+    alpha=0.8,            # transparencia: 0 es invisible y 1 es color sólido
+    s=50,                 # tamaño de los puntos
+)
+
+# Etiquetas de los ejes
+# eje x
+plt.xlabel(
+    'ventas de linea blanca', # etiqueta del eje x
+    fontsize=12  # tamaño de fuente
+)
+
+plt.ylabel(
+    'construccion de casas', # etiqueta del eje y
+    fontsize=12 # tamaño de fuente
+)
+
+# Fuente de los ticks
+plt.xticks(fontsize=10)
+plt.yticks(fontsize=10)
+
+# Márgenes
+plt.gca().spines['right'].set_visible(False) # derecha
+plt.gca().spines['top'].set_visible(False)   # superior
+
+# Cuadrícula (opcional, pero didáctica)
+plt.grid(
+    visible=True,
+    linestyle='--',
+    linewidth=0.7,
+    alpha=0.5,
+    color="gray"
+)
+
+     
+
+¿Los datos soportan la suposición de linealidad?
+si, porque a medida que aumenta el valor de las ventas, la cantidad de construcciones crece de forma progresiva y constante.
+
+Calcule el coeficiente de correlación e interprete el resultado.
+
+# Importar la función pearsonr desde scipy.stats
+from scipy.stats import pearsonr
+
+# Test de Pearson
+# H0: rho = 0     (No hay correlación)
+# H1: rho ≠ 0     (Sí hay correlación)
+# alpha = 0.05
+
+r, valor_p = pearsonr(X, Y)
+
+print(f"Coeficiente de correlación: {r: 0.4f}")
+print(f'valor_p: {valor_p: 0.4f}')
+
+     
+Coeficiente de correlación:  0.9808
+valor_p:  0.0000
+El coeficiente de correlacion es 
+, este valor indica que la correlacion es fuerte, dado que esta muy cerca de 1. Ademas, el que se negativa, implica que aumentar las ausencias (
+) disminuye el salario (
+).
+
+Calcule el coeficiente de determinación e interprete el resultado.
+
+import statsmodels.api as sm
+x_constante = sm.add_constant(X)
+modelo = sm.OLS(Y, x_constante).fit()
+y_calculada = modelo.predict(x_constante)
+     
+
+# Coeficiente de determinacion
+from sklearn.metrics import r2_score
+
+r2 = r2_score(Y, y_calculada)
+print(f"Coeficiente de determinacion: {r2: 0.2%}")
+     
+Coeficiente de determinacion:  96.19%
+Con coeficiente de determinacion de 
+ indica que con las ausencias estoy justificando en un 96.19% la variabilidad de gastos generales. Por lo que el modelo puede tener una buena capacidad de prediccion.
+
+Obtenga la recta de regresión ajustada y grafíquelo sobre el gráfico de dispersión.
+
+import statsmodels.api as sm
+
+x_constante = sm.add_constant(X)
+modelo = sm.OLS(Y, x_constante).fit()
+y_calculada = modelo.predict(x_constante)
+
+modelo.params
+     
+0
+const	1.016760
+construccion de casas	1.737564
+
+dtype: float64
+La ecuacion de la recta es:
+
+
+
+# Importamos la librería matplotlib.pyplot y le damos el pseudónimo plt
+import matplotlib.pyplot as plt
+
+# Configuración general del gráfico
+plt.figure(
+    figsize=(6, 4),   # tamaño de la figura (ancho, alto) en pulgadas
+    dpi=120           # resolución del gráfico
+)
+
+# Gráfico de dispersión
+plt.scatter(
+    X, Y,
+    marker="o",       # forma: googlear "matplotlib.markers"
+    color='yellow',     # color de los puntos
+    edgecolor='blue',    # borde de los puntos
+    alpha=0.8,            # transparencia: 0 es invisible y 1 es color sólido
+    s=50,                 # tamaño de los puntos
+)
+
+# Gráfico de línea
+plt.plot(
+    X, y_calculada,
+    color='black',   # color de la línea
+    linewidth=1.0,        # grosor de la línea
+    linestyle='--',        # estilo de línea
+    label='Recta de regresión'
+)
+
+# Etiquetas de los ejes
+# eje x
+plt.xlabel(
+    'ventas de linea blanca', # etiqueta del eje x
+    fontsize=12  # tamaño de fuente
+)
+
+plt.ylabel(
+    'construccion de casas', # etiqueta del eje y
+    fontsize=12 # tamaño de fuente
+)
+
+# Fuente de los ticks
+plt.xticks(fontsize=10)
+plt.yticks(fontsize=10)
+
+# Márgenes
+plt.gca().spines['right'].set_visible(False) # derecha
+plt.gca().spines['top'].set_visible(False)   # superior
+
+# Cuadrícula (opcional, pero didáctica)
+plt.grid(
+    visible=True,
+    linestyle='--',
+    linewidth=0.7,
+    alpha=0.5,
+    color="gray"
+)
+     
+
+Obtenga un intervalo de confianza del 95% para la pendiente de la recta de regresión ajustada ( b1 )
+La ecuacion de la recta es:
+
+
+
+#intervalos de confianza
+modelo.conf_int(alpha=0.05)
+
+     
+0	1
+const	-0.074848	2.108368
+construccion de casas	1.455693	2.019435
+El verdadero 
+ está entre 
+ y 
+ con una confianza del 95%. Esto indica que las unidades (
+) tiene una categoría de datos generales (
+) que está entre estos dos valores. EL verdadero valor de 
+ está entre 
+-0. 172989$ con un 95% de confianza. Dado que dentre de este intervalo no está el valor de cero, entonces la relación es significativa. También indica que por cada falta se pierde entre 2.019435 y 1.455693 en la categoría de datos generales.
+
+Calcule los residuales y trace un nuevo gráfico de dispersión. Comente, ¿Parece que se verifican los supuestos?
+
+residuales = modelo.resid
+     
+
+# Importamos la librería matplotlib.pyplot y le damos el pseudónimo plt
+import matplotlib.pyplot as plt
+import statsmodels.api as sm # Ensure sm is imported
+
+# Re-fit the model with the current X and Y (from Problem 5)
+x_constante = sm.add_constant(X)
+modelo = sm.OLS(Y, x_constante).fit()
+y_calculada = modelo.predict(x_constante)
+
+residuales = modelo.resid
+
+# Configuración general del gráfico
+plt.figure(
+    figsize=(6, 4),   # tamaño de la figura (ancho, alto) en pulgadas
+    dpi=120           # resolución del gráfico
+)
+
+
+# Gráfico de dispersión
+plt.scatter(
+    X, residuales,
+    marker="o",       # forma: googlear "matplotlib.markers"
+    color='blue',     # color de los puntos
+    edgecolor='black',    # borde de los puntos
+    alpha=0.8,            # transparencia: 0 es invisible y 1 es color sólido
+    s=50                  # tamaño de los puntos
+)
+
+ #Gráfico de línea
+plt.plot(
+    X,y_calculada * 0,
+    color='black',   # color de la línea
+    linewidth=1.0,        # grosor de la línea
+    linestyle='--',        # estilo de línea
+    label='Recta de regresión'
+)
+
+# Etiquetas de los ejes
+# eje x
+plt.xlabel(
+    'número_interrupciones', # etiqueta del eje x (updated for Problem 5)
+    fontsize=12  # tamaño de fuente
+)
+
+plt.ylabel(
+    'calificación_del_trabajador', # etiqueta del eje y (residuals)
+    fontsize=12 # tamaño de fuente
+)
+
+# Fuente de los ticks
+plt.xticks(fontsize=10)
+plt.yticks(fontsize=10)
+
+# Márgenes
+plt.gca().spines['right'].set_visible(False) # derecha
+plt.gca().spines['top'].set_visible(False)   # superior
+
+# Cuadrícula (opcional, pero didáctica)
+plt.grid(
+    visible=True,
+    linestyle='--',
+    linewidth=0.7,
+    alpha=0.5,
+    color="gray"
+)
+
+     
+
+Para los supuestos:
+
+Linealidad: Sí, porque los datos se distribuyen alrededor de una línea recta con una tendencia positiva claramente observable.
+
+Normalidad: Sí, porque los puntos presentan una distribución aproximadamente simétrica con respecto a la recta de ajuste.
+
+Homoscedasticidad: Sí, porque la variabilidad vertical de los datos se mantiene relativamente constante a lo largo de los distintos valores de la variable independiente.
+
+Independencia: Sí, porque cada observación corresponde a un registro o periodo diferente, por lo que no existe dependencia entre ellas.
+
+Realice la prueba de Shapiro para los residuales y comente el resultado.
+
+from scipy.stats import shapiro
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# n < 30, Shapiro-Wilk es el mas confiable
+# n >= 30, Histograma o Q-Q plot
+
+#test de shapiro-Wilk
+# 1
+#Ho:Hay normalidad   0.4172971767713699
+# 0.05 (Assuming this was intended as alpha value or a note)
+#Hi:No hay normalidad
+# 0
+
+# Prueba de Shapiro-Wilk
+stat, valor_p_sh = shapiro(residuales)
+print(f"valor-p (Shapiro) = {valor_p_sh}")
+
+# Visualización: Q-Q plot
+sm.qqplot(residuales, line='s')
+plt.title("Q-Q plot de residuos")
+plt.show()
+
+# Histograma
+sns.histplot(residuales, kde=True)
+plt.title("Histograma de residuos")
+plt.show()
+     
+valor-p (Shapiro) = 0.8463507249054649
+
+
+Realice la prueba de Brausch-Pagan para los residuales y comente el resultado.
+
+# Test de Breusch-Pagan
+# H0: No hay heterocedasticidad (dispersión es igual en toda la recta)
+# H1: Hay Heterocedasticidad (dispersión distinta a lo largo de la recta)
+# alpha = 0.05
+
+from statsmodels.stats.api import het_breuschpagan
+import statsmodels.api as sm
+x_constante = sm.add_constant(X)
+_, valor_p_bp, _, _ = het_breuschpagan(residuales, x_constante)
+print(f'valor-p de Breusch-Pagan: {valor_p_bp: 0.4f}\n')
+     
+valor-p de Breusch-Pagan:  0.1581
+
+Utiliza la recta de regresión para interpolar dos valores y extrapolar uno. Comenta estos resultados.
+
+# minimo ausencias: 11
+# maximo ausencias: 40
+
+# interpolar, valores de x entre 11 y 40
+
+# interpolar 1
+y_25 = modelo.predict([1, 25])
+y_32 = modelo.predict ([1,32])
+
+print(f"Para x = 25, y = {y_25[0]: 0.4f}")
+print(f"Para x = 32, y = {y_32[0]: 0.4f}")
+     
+Para x = 25, y =  44.4559
+Para x = 32, y =  56.6188
+
+df["salario_predicho"] = y_calculada.round()
+df
+     
+construccion de casas	ventas de linea blanca	salario_predicho
+0	2.0	5.0	4.0
+1	2.5	5.5	5.0
+2	3.2	6.0	7.0
+3	3.6	7.0	7.0
+4	3.7	7.2	7.0
+5	4.0	7.7	8.0
+6	4.2	8.4	8.0
+7	4.6	9.0	9.0
+8	4.8	9.7	9.0
+9	5.0	10.0	10.0
+Realice una tabla ANOVA e interprete el resultado.
+
+# test de ANOVA (Analysis of Variance)
+# H0: beta_1 = 0   (No hay correlación)
+# H1: beta_1 ≠ 0   (Sí hay correlación)
+
+import statsmodels.api as sm
+from statsmodels.formula.api import ols
+# Y ~ X
+modelo_lineal = ols(
+    '''Q('ventas de linea blanca') ~ Q('construccion de casas')''',
+    data = df).fit()
+tabla_anova = sm.stats.anova_lm(modelo_lineal)
+tabla_anova
+     
+df	sum_sq	mean_sq	F	PR(>F)
+Q('construccion de casas')	1.0	25.976581	25.976581	202.069951	5.841003e-07
+Residual	8.0	1.028419	0.128552	NaN	NaN
+Sí hay correlación porque el valor-p de 
+ es menor a un nivel de significancia 
+. I En los residuales del anova se puede ver la variabilidad explicada porla recta de regresión es mucho mayor que la variabilidad que queda sin explicar
+
+Problema 5
+William C. Andrews, consultor de comportamiento organizacional de Victory Motorcycles, ha diseñado una prueba para mostrar a los supervisores de la compañía los peligros de sobrevigilar a sus trabajadores. Un trabajador de la línea de ensamble tiene a su cargo una serie de tareas complicadas. Durante el desempeño del trabajador, un inspector lo interrumpe constantemente para ayudarlo a terminar las tareas. El trabajador, después de terminar su trabajo, recibe una prueba psicológica diseñada para medir la hostilidad del trabajador hacia la autoridad (una alta puntuación implica una hostilidad baja). A ocho distintos trabajadores se les asignaron las tareas y luego se les interrumpió para darles instrucciones útiles un número variable de veces (línea X). Sus calificaciones en la prueba de hostilidad se dan en el renglón Y.
+
+número interrupciones al trabajador	5	10	10	15	15	20	20	25
+calificación del trabajador en la prueba de hostilidad	58	41	45	27	26	12	16	3
+Establesca una variable dependiente (
+) y una variable independiente (
+).
+Realice un diagrama de dispersión para estos datos.
+¿Los datos soportan la suposición de linealidad?
+Calcule el coeficiente de correlación e interprete el resultado.
+Calcule el coeficiente de determinación e interprete el resultado.
+Obtenga la recta de regresión ajustada y grafíquelo sobre el gráfico de dispersión.
+Obtenga un intervalo de confianza del 95% para la pendiente de la recta de regresión ajustada (
+)
+Calcule los residuales y trace un nuevo gráfico de dispersión. Comente, ¿Parece que se verifican los supuestos?
+Realice la prueba de Shapiro para los residuales y comente el resultado.
+Realice la prueba de Brausch-Pagan para los residuales y comente el resultado.
+Utiliza la recta de regresión para interpolar dos valores y extrapolar uno. Comenta estos resultados.
+Realice una tabla ANOVA e interprete el resultado.
+
+import pandas as pd
+
+df = pd.DataFrame({
+    "número_interrupciones": [5, 10, 10, 15,	15,	20,	20,	25],
+    "calificación_del_trabajador": [58,	41,	45,	27,	26,	12,	16,	3]
+})
+
+df
+     
+número_interrupciones	calificación_del_trabajador
+0	5	58
+1	10	41
+2	10	45
+3	15	27
+4	15	26
+5	20	12
+6	20	16
+7	25	3
+Establesca una variable dependiente ( Y ) y una variable independiente ( X ).
+Y : Gastos generales, porque el problema indica que se estiman con base en el nivel de producción.
+
+X : Unidades, porque son la variable en la que se basa la estimación de los gastos generales.
+
+
+X = df["número_interrupciones"]
+Y = df["calificación_del_trabajador"]
+     
+Realice un diagrama de dispersión para estos datos.
+
+# Importamos la librería matplotlib.pyplot y le damos el pseudónimo plt
+import matplotlib.pyplot as plt
+
+# Configuración general del gráfico
+plt.figure(
+    figsize=(6, 4),   # tamaño de la figura (ancho, alto) en pulgadas
+    dpi=120           # resolución del gráfico
+)
+
+# Gráfico de dispersión
+plt.scatter(
+    X, Y,
+    marker="o",       # forma: googlear "matplotlib.markers"
+    color='yellow',     # color de los puntos
+    edgecolor='blue',    # borde de los puntos
+    alpha=0.8,            # transparencia: 0 es invisible y 1 es color sólido
+    s=50,                 # tamaño de los puntos
+)
+
+# Etiquetas de los ejes
+# eje x
+plt.xlabel(
+    'calificación_del_trabajador', # etiqueta del eje x
+    fontsize=12  # tamaño de fuente
+)
+
+plt.ylabel(
+    'número_interrupciones', # etiqueta del eje y
+    fontsize=12 # tamaño de fuente
+)
+
+# Fuente de los ticks
+plt.xticks(fontsize=10)
+plt.yticks(fontsize=10)
+
+# Márgenes
+plt.gca().spines['right'].set_visible(False) # derecha
+plt.gca().spines['top'].set_visible(False)   # superior
+
+# Cuadrícula (opcional, pero didáctica)
+plt.grid(
+    visible=True,
+    linestyle='--',
+    linewidth=0.7,
+    alpha=0.5,
+    color="gray"
+)
+
+     
+
+¿Los datos soportan la suposición de linealidad?
+Si, por que medida que aumenta la calificación del trabajador, disminuye de forma constante y ordenada el número de interrupciones.
+
+Calcule el coeficiente de correlación e interprete el resultado
+
+# Importar la función pearsonr desde scipy.stats
+from scipy.stats import pearsonr
+
+# Test de Pearson
+# H0: rho = 0     (No hay correlación)
+# H1: rho ≠ 0     (Sí hay correlación)
+# alpha = 0.05
+
+r, valor_p = pearsonr(X, Y)
+
+print(f"Coeficiente de correlación: {r: 0.4f}")
+print(f'valor_p: {valor_p: 0.4f}')
+     
+Coeficiente de correlación: -0.9928
+valor_p:  0.0000
+El coeficiente de correlacion es 
+, este valor indica que la correlacion es fuerte, dado que esta muy cerca de 1. Ademas, el que se negativa, implica que aumentar las ausencias (
+) disminuye el salario (
+).
+
+Calcule el coeficiente de determinación e interprete el resultado.
+
+import statsmodels.api as sm
+x_constante = sm.add_constant(X)
+modelo = sm.OLS(Y, x_constante).fit()
+y_calculada = modelo.predict(x_constante)
+
+# Coeficiente de determinacion
+from sklearn.metrics import r2_score
+
+r2 = r2_score(Y, y_calculada)
+print(f"Coeficiente de determinacion: {r2: 0.2%}")
+     
+Coeficiente de determinacion:  98.58%
+Con coeficiente de determinacion de 
+ indica que con las ausencias estoy justificando en un 98.58% la variabilidad de los salarios. Por lo que el modelo puede tener una buena capacidad de prediccion.
+
+Obtenga la recta de regresión ajustada y grafíquelo sobre el gráfico de dispersión.
+
+import statsmodels.api as sm
+
+x_constante = sm.add_constant(X)
+modelo = sm.OLS(Y, x_constante).fit()
+y_calculada = modelo.predict(x_constante)
+
+modelo.params
+     
+0
+const	70.5
+número_interrupciones	-2.8
+
+dtype: float64
+La ecuacion de la recta es:
+
+
+
+# Importamos la librería matplotlib.pyplot y le damos el pseudónimo plt
+import matplotlib.pyplot as plt
+
+# Configuración general del gráfico
+plt.figure(
+    figsize=(6, 4),   # tamaño de la figura (ancho, alto) en pulgadas
+    dpi=120           # resolución del gráfico
+)
+
+# Gráfico de dispersión
+plt.scatter(
+    X, Y,
+    marker="o",       # forma: googlear "matplotlib.markers"
+    color='yellow',     # color de los puntos
+    edgecolor='blue',    # borde de los puntos
+    alpha=0.8,            # transparencia: 0 es invisible y 1 es color sólido
+    s=50,                 # tamaño de los puntos
+)
+
+# Gráfico de línea
+plt.plot(
+    X, y_calculada,
+    color='black',   # color de la línea
+    linewidth=1.0,        # grosor de la línea
+    linestyle='--',        # estilo de línea
+    label='Recta de regresión'
+)
+
+# Etiquetas de los ejes
+# eje x
+plt.xlabel(
+    'calificación_del_trabajador', # etiqueta del eje x
+    fontsize=12  # tamaño de fuente
+)
+
+plt.ylabel(
+    'número_interrupciones', # etiqueta del eje y
+    fontsize=12 # tamaño de fuente
+)
+
+# Fuente de los ticks
+plt.xticks(fontsize=10)
+plt.yticks(fontsize=10)
+
+# Márgenes
+plt.gca().spines['right'].set_visible(False) # derecha
+plt.gca().spines['top'].set_visible(False)   # superior
+
+# Cuadrícula (opcional, pero didáctica)
+plt.grid(
+    visible=True,
+    linestyle='--',
+    linewidth=0.7,
+    alpha=0.5,
+    color="gray"
+)
+     
+
+Obtenga un intervalo de confianza del 95% para la pendiente de la recta de regresión ajustada ( b1 )
+La ecuacion de la recta es:
+
+
+
+#intervalos de confianza
+modelo.conf_int(alpha=0.05)
+     
+0	1
+const	65.051384	75.948616
+número interrupciones al trabajador	-3.136296	-2.463704
+El verdadero 
+ está entre 
+ y 
+ con una confianza del 95%. Esto indica que una persona sin ausencias (
+) tiene una categoría de salario (
+) que está entre estos dos valores. EL verdadero valor de 
+ está entre 
+-0. 172989$ con un 95% de confianza. Dado que dentre de este intervalo no está el valor de cero, entonces la relación es significativa. También indica que por cada falta se pierde entre -2.463704 y -3.136296 en la categoría de salario
+
+Calcule los residuales y trace un nuevo gráfico de dispersión. Comente, ¿Parece que se verifican los supuestos?
+
+# Importamos la librería matplotlib.pyplot y le damos el pseudónimo plt
+import matplotlib.pyplot as plt
+
+residuales = modelo.resid
+
+# Configuración general del gráfico
+plt.figure(
+    figsize=(6, 4),   # tamaño de la figura (ancho, alto) en pulgadas
+    dpi=120           # resolución del gráfico
+)
+
+
+# Gráfico de dispersión
+plt.scatter(
+    X, residuales,
+    marker="o",       # forma: googlear "matplotlib.markers"
+    color='blue',     # color de los puntos
+    edgecolor='black',    # borde de los puntos
+    alpha=0.8,            # transparencia: 0 es invisible y 1 es color sólido
+    s=50,                 # tamaño de los puntos
+)
+
+ #Gráfico de línea
+plt.plot(
+    X,y_calculada * 0,
+    color='black',   # color de la línea
+    linewidth=1.0,        # grosor de la línea
+    linestyle='--',        # estilo de línea
+    label='Recta de regresión'
+)
+
+# Etiquetas de los ejes
+# eje x
+plt.xlabel(
+    'calificación_del_trabajador', # etiqueta del eje x
+    fontsize=12  # tamaño de fuente
+)
+
+plt.ylabel(
+    'número_interrupciones', # etiqueta del eje y
+    fontsize=12 # tamaño de fuente
+)
+
+# Fuente de los ticks
+plt.xticks(fontsize=10)
+plt.yticks(fontsize=10)
+
+# Márgenes
+plt.gca().spines['right'].set_visible(False) # derecha
+plt.gca().spines['top'].set_visible(False)   # superior
+
+# Cuadrícula (opcional, pero didáctica)
+plt.grid(
+    visible=True,
+    linestyle='--',
+    linewidth=0.7,
+    alpha=0.5,
+    color="gray"
+)
+
+     
+
+Para los supuestos:
+
+Linealidad: Sí, porque los puntos presentan una tendencia lineal descendente y se distribuyen de manera uniforme alrededor de la recta de regresión, sin evidenciar patrones curvos.
+
+Normalidad: Sí, porque los residuos muestran una distribución aproximadamente simétrica respecto a la recta ajustada, sin desviaciones importantes ni asimetrías notables.
+
+Homoscedasticidad: Sí, porque la dispersión de los puntos se mantiene relativamente constante a lo largo de todos los valores de la variable independiente, sin observar cambios significativos en la variabilidad.
+
+Independencia: Sí, porque cada observación es independiente de las demás y no se identifican patrones, ciclos o relaciones que indiquen dependencia entre los datos.
+
+Realice la prueba de Shapiro para los residuales y comente el resultado.
+
+from scipy.stats import shapiro
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Prueba de Shapiro-Wilk
+stat, valor_p_sh = shapiro(residuales)
+print(f"valor-p (Shapiro) = {valor_p_sh: 0.4f}")
+
+# Visualización: Q-Q plot
+sm.qqplot(residuales, line='s')
+plt.title("Q-Q plot de residuos")
+plt.show()
+
+# Histograma
+sns.histplot(residuales, kde=True)
+plt.title("Histograma de residuos")
+plt.show()
+     
+valor-p (Shapiro) =  0.0548
+
+
+Realice la prueba de Brausch-Pagan para los residuales y comente el resultado.
+
+from statsmodels.stats.api import het_breuschpagan
+import statsmodels.api as sm
+
+x_constante = sm.add_constant(X)
+_, valor_p_bp, _, _ = het_breuschpagan(residuales, x_constante)
+print(f'valor-p de Breusch-Pagan: {valor_p_bp: 0.4f}\n')
+     
+valor-p de Breusch-Pagan:  0.2482
+
+Utiliza la recta de regresión para interpolar dos valores y extrapolar uno. Comenta estos resultados.
+
+# Minimo de Unidades: 5
+# Maximo de Unidades: 25
+
+# Interpolar: Valores de X entre 5 y 25
+y_45 = modelo.predict([1, 25])
+y_50 = modelo.predict ([1, 32])
+
+print(f"Para X = 45 Unidades, Y (Gastos generales) = {y_45[0]: 0.4f}")
+print(f"Para X = 50 Unidades, Y (Gastos generales) = {y_50[0]: 0.4f}")
+     
+Para X = 45 Unidades, Y (Gastos generales) =  0.5000
+Para X = 50 Unidades, Y (Gastos generales) = -19.1000
+Realice una tabla ANOVA e interprete el resultado.
+
+# test de ANOVA (Analysis of Variance)
+# H0: beta_1 = 0   (No hay correlación)
+# H1: beta_1 ≠ 0   (Sí hay correlación)
+
+import statsmodels.api as sm
+from statsmodels.formula.api import ols
+# Y ~ X
+modelo_lineal = ols(
+    "Q('calificación_del_trabajador') ~ Q('número_interrupciones')",
+    data = df).fit()
+tabla_anova = sm.stats.anova_lm(modelo_lineal)
+tabla_anova
+     
+df	sum_sq	mean_sq	F	PR(>F)
+Q('número_interrupciones')	1.0	2352.0	2352.000000	415.058824	9.090964e-07
+Residual	6.0	34.0	5.666667	NaN	NaN
+Sí hay correlación porque el valor-p de 
+ es menor a un nivel de significancia 
+. I En los residuales del anova se puede ver la variabilidad explicada porla recta de regresión es mucho mayor que la variabilidad que queda sin explicar
