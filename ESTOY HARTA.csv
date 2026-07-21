@@ -1,0 +1,56 @@
+Género,Edad,Semestre,Carrera,Horas_de_clase_al_día ,Horas_de_estudio_fuera_de_clase,Frecuencias_de_tareas/proyectos,Trabajas_además_de_estudiar,Tiempo_de_traslado,Actividad_fÍsica,Horas_de_redes_sociales,Consumo de cafeína veces al dia,Bebidas energéticas,Comes_después_de_las_10pm,Dispositivos_antes_de_dormir,Hora_de_dormir,Hora de despertar,Horas de sueño,Descansas al despertar,Dificultad para dormir,Despiertas en la noche,Sueño durante clases,Te has dormido en clase,Calidad del sueño,Factor que más influye en tu descanso
+Hombre,20,5to,IGE,4    ,4,Siempre,Medio tiempo,15,3-4 dias,3,1,Nunca,A veces,30 min.,10:00:00 p. m.,06:00:00 a. m.,7.5,Casi siempre,Rara vez,Nunca,Rara vez,Nunca,4,Carga académica
+Hombre,21,7to,IGE,5,2,Algunas veces,Medio tiempo,15,3-4 dias,4,2,Algunas veces,A veces,30 min.,11:00:00 p. m.,06:00:00 a. m.,5,Rara vez,Algunas veces,Rara vez,Rara vez,Nunca,3,Estrés
+Mujer,19,5to,IGE,4,1,Frecuentemente,No,20,3-4 dias,5,1,Algunas veces,A veces,1h,10:30:00 p. m.,06:00:00 a. m.,5.5,Rara vez,Algunas veces,Rara vez,Algunas veces,Nunca,3,Carga académica
+Mujer,23,6to,Industrial ,5,3,Rara vez,Medio tiempo,40,3-4 dias,3,2,Rara vez,Frecuentemente,45 min.,12:00:00 a. m.,07:00:00 a. m.,6.4,Rara vez,Rara vez,Rara vez,Rara vez,Una vez,4,Estrés
+Mujer,20,5to,TICS,7,2,Frecuentemente,Medio tiempo,40,Nunca,6,0,Rara vez,Frecuentemente,30 min.,01:00:00 p. m.,07:00:00 a. m.,5.3,Casi siempre,Rara vez,Rara vez,Algunas veces,Una vez,3,Trabajo
+Hombre,21,8to,TICS,4,2.5,Frecuentemente,Medio tiempo,25,3-4 dias,3,1,Rara vez,Frecuentemente,1 h,12:30:00 a. m.,06:15:00 a. m.,5,Casi siempre,Rara vez,Rara vez,Algunas veces,Nunca,4,Trabajo
+Hombre,20,5to,Industrial ,5,1,Algunas veces,Ocasionalmente,15,5 dias,5,1,Algunas veces,Siempre,1 h,02:00:00 a. m.,07:20:00 a. m.,5.5,Siempre,Nunca,Rara vez,Rara vez,Una vez,4,Otro
+Hombre,24,4to,Industrial ,8,1,Algunas veces,Medio tiempo,40,1-2 dias,4,2,Nunca,A veces,30 min.,01:30:00 a. m.,06:30:00 a. m.,5.3,Rara vez,Frecuentemente,Algunas veces,Algunas veces,Algunas veces,3,Trabajo
+Hombre,21,6to,IGE,5,2.5,Algunas veces,Medio tiempo,15,3-4 dias,2,0,Nunca,A veces,40 min.,11:15:00 p. m.,07:30:00 a. m.,6,Casi siempre,Frecuentemente,Algunas veces,Algunas veces,Una vez,3,Celular
+Hombre,20,5to,Ingeniería Eléctrica ,6,1,Frecuentemente,Medio tiempo,15,1-2 dias,3,1,Rara vez,A veces,35 min.,10:00:00 p. m.,06:00:00 a. m.,4.5,Rara vez,Frecuentemente,Rara vez,Algunas veces,Una vez,4,Estrés
+Hombre,22,8vo ,Industrial,3,2,Rara vez,Ocasionalmente,15,Nunca,6,0,Rara vez,Frecuentemente,35 min.,12:00:00 a. m.,07:40:00 a. m.,6.5,Rara vez,Algunas veces,Algunas veces,Rara vez,Una vez,3,Carga académica
+Hombre,20,6to,TICS,8,2,Frecuentemente,Ocasionalmente,15,Nunca,6,2,Algunas veces,Frecuentemente,1 h,10:15:00 p. m.,06:20:00 a. m.,5.5,Rara vez,Algunas veces,Rara vez,Rara vez,Una vez,3,Carga académica
+Hombre,19,4to,LA,5,1,Rara vez,Medio tiempo,25,3-4 dias,6,0,Algunas veces,A veces,1 h,11:40:00 p. m.,07:10:00 a. m.,7,Casi siempre,Algunas veces,Nunca,Rara vez,Nunca,4,Celular
+Mujer,22,8to,Ingeniería eléctrica ,4,1,Rara vez,Ocasionalmente,25,3-4 dias,3,1,Algunas veces,A veces,50 min.,10:00:00 p. m.,07:30:00 a. m.,5.5,Casi siempre,Rara vez,Algunas veces,Algunas veces,Una vez,3,Celular
+Mujer,19,4to,LA,6,3,Algunas veces,Medio tiempo,35,1-2 dias,5,2,Algunas veces,Frecuentemente,30 min.,12:15:00 a. m.,08:00:00 a. m.,8,Siempre,Rara vez,Rara vez,Rara vez,Nunca,4,Trabajo
+Mujer,20,5to,IGE,7,3,Frecuentemente,Ocasionalmente,20,5 dias,3,1,Algunas veces,Nunca,35 min.,10:30:00 p. m.,08:10:00 a. m.,8,Nunca,Algunas veces,Rara vez,Algunas veces,Algunas veces,5,Estrés
+Mujer,19,4to,industrial,7,2.5,Frecuentemente,Medio tiempo,30,5 dias,6,1,Nunca,Frecuentemente,45 min.,11:20:00 p. m.,08:00:00 a. m.,7.5,Casi siempre,Algunas veces,Rara vez,Algunas veces,Nunca,4,Trabajo
+Mujer,20,5to,TICS,8,1.5,Frecuentemente,No,40,3-4 dias,5,2,Algunas veces,Frecuentemente,55 min.,10:30:00 p. m.,06:00:00 a. m.,5.5,Siempre,Nunca,Rara vez,Nunca,Nunca,5,Carga académica
+Mujer,21,8to,IGE,5,1.5,Algunas veces,Medio tiempo,15,3-4 dias,4,1,Nunca,A veces,40 min.,11:00:00 p. m.,06:10:00 a. m.,6,Casi siempre,Algunas veces,Rara vez,Rara vez,Nunca,3,Estrés
+Hombre,21,7to,Industrial ,5,2.5,Algunas veces,Medio tiempo,60,5 dias,5,3,Frecuentemente,Frecuentemente,1 h,11:00:00 p. m.,08:15:00 a. m.,6.5,Casi siempre,Algunas veces,Algunas veces,Algunas veces,Algunas veces,3,Otro
+Hombre,21,6to,IGE,3,1,Algunas veces,Tiempo completo,25,1-2 dias,2,0,Nunca,Nunca,35 min.,02:00:00 a. m.,08:00:00 a. m.,4.5,Rara vez,Rara vez,Nunca,Rara vez,Algunas veces,2,Carga académica
+Hombre,20,6to,IGE,4,2.5,Nunca,No,30,1-2 dias,3,1,Rara vez,A veces,30 min.,12:00:00 a. m.,06:40:00 a. m.,6.3,Rara vez,Rara vez,,Rara vez,Algunas veces,3,Trabajo
+Mujer,20,5to,IGE,3,4,Siempre,No,15,3-4 dias,3,0,Nunca,A veces,50 min.,11:00:00 p. m.,07:40:00 a. m.,8,Casi siempre,Algunas veces,Algunas veces,Algunas veces,Nunca,4,Estrés
+Hombre,22,7to,IGE,5,4,Algunas veces,Ocasionalmente,30,3-4 dias,6,1,Nunca,A veces,30 min.,10:00:00 p. m.,06:10:00 a. m.,5.6,Casi siempre,Rara vez,Algunas veces,Algunas veces,Algunas veces,4,Salud
+,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,
