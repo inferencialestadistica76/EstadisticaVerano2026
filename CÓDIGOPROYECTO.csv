@@ -1,0 +1,21 @@
+Genero,Edad,Semestre,Carrera,Horas_de_clase_al_dia ,Horas_de_estudio_fuera_de_clase,Frecuencias_de_tareas_proyectos,Trabajas_ademas_de_estudiar,Actividad_fisica,Horas_de_redes_sociales,Dispositivos_antes_de_dormir,Hora_de_dormir,Hora_de_despertar,Horas_de_sueño,Descansas_al_despertar,Dificultad_para_dormir,Calidad_del_sueño,Factor_que_mas_influye_en_tu_descanso
+Hombre,20,5,ige,4,4,Siempre,Medio tiempo,3,3,3,9,7,7.5,Casi siempre,Rara vez,4,Carga academica
+Hombre,21,7,ige,5,2,Algunas veces,Medio tiempo,4,4,5,10,5,5,Rara vez,Algunas veces,3,Estres
+Mujer,19,5,la,4,1,Frecuentemente,No,4,5,2,11,6,5.5,Rara vez,Algunas veces,3,Carga academica
+Mujer,23,6,industrial,5,3,Rara vez,Medio tiempo,2,3,5,2,8,6.4,Rara vez,Rara vez,4,Estres
+Mujer,20,5,tics,7,2,Frecuentemente,Medio tiempo,1,6,3,1,8,5.3,Casi siempre,Rara vez,3,Trabajo
+Hombre,21,8,tics,4,2,Frecuentemente,Medio tiempo,3,3,4,11,6,5,Casi siempre,Rara vez,4,Trabajo
+Hombre,20,5,electrica,5,1,Algunas veces,Ocasionalmente,5,5,2,12,5,5.5,Siempre,Nunca,4,Otro
+Hombre,24,4,industrial,8,1,Algunas veces,Medio tiempo,2,4,5,10,7,5.3,Rara vez,Frecuentemente,3,Trabajo
+Hombre,21,6,ige,5,2,Algunas veces,Medio tiempo,4,2,4,9,7,6,Casi siempre,Frecuentemente,3,Celular
+Hombre,20,5,electrica,6,1,Frecuentemente,Medio tiempo,2,3,3,2,5,4.5,Rara vez,Frecuentemente,4,Estres
+Hombre,22,8,industrial,3,2,Rara vez,Ocasionalmente,1,6,3,11,7,6.5,Rara vez,Algunas veces,3,Carga academica
+Hombre,20,6,tics,8,2,Frecuentemente,Ocasionalmente,1,6,2,10,5,5.5,Rara vez,Algunas veces,3,Carga academica
+Hombre,19,4,la,5,1,Rara vez,Medio tiempo,3,6,5,9,8,7,Casi siempre,Algunas veces,4,Celular
+Mujer,22,8,electrica,4,1,Rara vez,Ocasionalmente,4,3,4,1,6,5.5,Casi siempre,Rara vez,3,Celular
+Mujer,19,4,la,6,3,Algunas veces,Medio tiempo,2,5,5,1,8,8,Siempre,Rara vez,4,Trabajo
+Mujer,20,5,ige,7,3,Frecuentemente,Ocasionalmente,5,3,4,12,7,8,Nunca,Algunas veces,5,Estres
+Mujer,19,4,industrial,7,2,Frecuentemente,Medio tiempo,5,6,3,11,6,7.5,Casi siempre,Algunas veces,4,Trabajo
+Mujer,20,5,tics,8,1,Frecuentemente,No,4,5,4,12,5,5.5,Siempre,Nunca,5,Carga academica
+Mujer,21,8,electrica,5,1,Algunas veces,Medio tiempo,3,4,2,10,7,6,Casi siempre,Algunas veces,3,Estres
+Hombre,21,7,la,5,2,Algunas veces,Medio tiempo,4,5,4,12,8,6.5,Casi siempre,Algunas veces,3,Otro
